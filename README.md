@@ -52,7 +52,10 @@ This project is a fully local Retrieval-Augmented Generation (RAG) assistant bui
 - `Who is the president of Mars?`
 
 ## Demo Video
-- 
+-  https://youtu.be/qh1tONjnP-8
+
+## Github
+- https://github.com/frkntsn/rag_assistan
 
 ## Notes
 - Seed list now contains 20 people + 20 places (including the mandatory assignment entities).

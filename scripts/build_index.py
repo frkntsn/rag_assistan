@@ -1,9 +1,12 @@
 import sys
+import time
 from pathlib import Path
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
+
+REQUEST_DELAY_SECONDS = 0.4
 
 from src.data.entities import PEOPLE, PLACES
 from src.ingest.wikipedia_ingest import fetch_wikipedia_extract
@@ -27,11 +30,13 @@ def build_index():
             text = fetch_wikipedia_extract(title)
         except Exception as exc:
             print(f"  - Skipped {title} (fetch error: {exc})", flush=True)
+            time.sleep(REQUEST_DELAY_SECONDS)
             continue
 
         chunks = chunk_text(text)
         if not chunks:
             print(f"  - Skipped {title} (empty extract)", flush=True)
+            time.sleep(REQUEST_DELAY_SECONDS)
             continue
 
         print(f"  - {len(chunks)} chunks", flush=True)
@@ -56,6 +61,7 @@ def build_index():
 
         if not entity_docs:
             print(f"  - Skipped {title} (no chunk embedded)", flush=True)
+            time.sleep(REQUEST_DELAY_SECONDS)
             continue
 
         upsert_chunks(
@@ -66,6 +72,7 @@ def build_index():
         )
         total_chunks += len(entity_docs)
         print(f"  - Indexed {len(entity_docs)} chunks for {title}", flush=True)
+        time.sleep(REQUEST_DELAY_SECONDS)
 
     if total_chunks == 0:
         print("No chunks were indexed. Check network access and entity titles.", flush=True)

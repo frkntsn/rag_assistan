@@ -14,6 +14,8 @@ def route_query(query: str) -> RouteType:
     q = f" {query.lower()} "
     if any(token in q for token in COMPARE_HINTS):
         return "both"
+    if " who " in q:
+        return "person"
 
     has_person = any(token in q for token in PERSON_HINTS)
     has_place = any(token in q for token in PLACE_HINTS)
